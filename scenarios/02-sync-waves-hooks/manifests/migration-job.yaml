@@ -14,4 +14,4 @@ spec:
       containers:
         - name: migrate
           image: busybox:1.36
-          command: ["sh", "-c", "echo migrating...; sleep 15; echo done; exit 0"]
+          command: ["sh", "-c", "echo migrating...; sleep 15; echo done; exit 1"]
