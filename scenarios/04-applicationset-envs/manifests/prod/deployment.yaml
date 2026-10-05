@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: envs-app
+  labels:
+    env: prod
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: envs-app
+  template:
+    metadata:
+      labels:
+        app: envs-app
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.27
+          resources:
+            requests: { cpu: 50m, memory: 64Mi }
+            limits: { cpu: 200m, memory: 128Mi }

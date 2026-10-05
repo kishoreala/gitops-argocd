@@ -1,0 +1,21 @@
+# The ROOT app. Applied BY HAND once. It watches apps/ and creates the child Applications found there.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: lab-root
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io   # deleting the root also deletes children (cascade)
+spec:
+  project: lab
+  source:
+    repoURL: https://github.com/kishoreala/gitops-argocd.git
+    targetRevision: main
+    path: apps
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd            # children are Application objects, which live in argocd
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

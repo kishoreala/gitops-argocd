@@ -1,0 +1,9 @@
+# Cluster-scoped. The team-a project does not whitelist ClusterRole, so a sync containing it is rejected.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: team-a-escalation
+rules:
+  - apiGroups: [""]
+    resources: ["secrets"]
+    verbs: ["get", "list"]

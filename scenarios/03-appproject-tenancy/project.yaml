@@ -1,0 +1,16 @@
+# Apply by hand. Team A may deploy only from this repo, only to team-a-* namespaces,
+# and may create no cluster-scoped kinds except Namespace.
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: team-a
+  namespace: argocd
+spec:
+  sourceRepos:
+    - https://github.com/kishoreala/gitops-argocd.git
+  destinations:
+    - server: https://kubernetes.default.svc
+      namespace: team-a-*
+  clusterResourceWhitelist:
+    - group: ""
+      kind: Namespace

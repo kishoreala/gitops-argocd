@@ -1,0 +1,18 @@
+# Applied BY HAND once (kubectl apply). Not inside apps/, so the root app does not manage it.
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: lab
+  namespace: argocd
+spec:
+  description: Lab project for the app-of-apps exercise
+  sourceRepos:
+    - https://github.com/kishoreala/gitops-argocd.git
+  destinations:
+    - server: https://kubernetes.default.svc
+      namespace: argocd          # where child Application objects get created
+    - server: https://kubernetes.default.svc
+      namespace: lab-*           # where the workloads run
+  clusterResourceWhitelist:      # least privilege: only Namespaces (needed by CreateNamespace=true)
+    - group: ""
+      kind: Namespace

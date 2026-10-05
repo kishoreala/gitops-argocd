@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: rollback-demo
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: lab
+  source:
+    repoURL: https://github.com/kishoreala/gitops-argocd.git
+    targetRevision: main
+    path: scenarios/06-rollback-gitops/manifests
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: lab-rollback
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

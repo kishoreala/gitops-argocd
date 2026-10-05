@@ -1,0 +1,41 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: envs
+  namespace: argocd
+spec:
+  goTemplate: true
+  generators:
+    - list:
+        elements:
+          - env: dev
+            autoSync: "true"
+          - env: test
+            autoSync: "true"
+          - env: prod
+            autoSync: "false"     # prod waits for a human sync
+  template:
+    metadata:
+      name: "envs-{{.env}}"
+      labels:
+        env: "{{.env}}"
+    spec:
+      project: lab
+      source:
+        repoURL: https://github.com/kishoreala/gitops-argocd.git
+        targetRevision: main
+        path: "scenarios/04-applicationset-envs/manifests/{{.env}}"
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: "lab-envs-{{.env}}"
+      syncPolicy:
+        syncOptions:
+          - CreateNamespace=true
+  templatePatch: |
+    {{- if eq .autoSync "true" }}
+    spec:
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+    {{- end }}
