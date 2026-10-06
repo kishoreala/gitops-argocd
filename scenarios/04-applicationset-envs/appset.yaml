@@ -12,6 +12,8 @@ spec:
             autoSync: "true"
           - env: test
             autoSync: "true"
+          - env: staging
+            autoSync: "true"
           - env: prod
             autoSync: "false"     # prod waits for a human sync
   template:
